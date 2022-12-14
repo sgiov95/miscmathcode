@@ -59,11 +59,16 @@ Outputs: a list of m-dimensional lists,
          n, ea element containing at least k
 '''
 def Generate_Simplex(n,m,k=0):
+    #list for answer, generate stringset
     ans = []
     a = stringset1(n,m,k)
+    #loop handles iterating through each ordered set
     for x in a:
+        #generate permutations for ea element
         b = list(permutations(x, m))
         res = []
+        #remove duplicates from b, put into res
         [res.append(y) for y in b if y not in res]
+        #append to final answer, ans
         [ans.append(list(y)) for y in res]
     return ans
