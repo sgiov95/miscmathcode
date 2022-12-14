@@ -1,33 +1,36 @@
-#generate all strings of length n and sum m
-
 import numpy as np
 
 '''
-This function generates a list containing all ordered strings of
-length n that add up to m such that each component is positive
+The function stringset returns the total set of ascending order m-tuples that add
+up to n and have at least k in each bin. 
 
-Inputs: n, the lenght of the string
-        m, the sum of the string
-        n <= m
+Inputs: n, a non-negative integer
+    	m, a positive integer, m > 2 and m <= n
+        optional), a non-negative integer
 
-Outputs: a list containing the strings
-
+Output: a list of np.arrays containing all ordered m-tuples in ascending order
 '''
-
-def posstringset(n,m):
-    if n == m:
-        return [np.ones(n,dtype=int)]
+def stringset(n,m,k=0):
+    q1 = m*k
+    #base case
+    if n == q1:
+        return [k*np.ones(m,dtype=int)]
     else:
-        prev_set = posstringset(n,m-1)
+        #recursive step
+        prev_set = stringset(n-1,m,k)
         new_set = []
-        for i in range(n):
+        iden = np.eye(m)
+        #outer loop runs through 'basic solutions'
+        for i in range(m):
+            #inner loop goes through the set that was recursively made
             for x in prev_set:
-                y = np.sort(x + np.eye(n)[i])
+                #add 'basic solution'
+                y = np.sort(x + iden[-i])
+                #check if new solution is already in the set to eliminate repeats
                 if containedinset(y,new_set) == False:
                     new_set.append(y)
     return new_set
-                
-                
+
 '''
 This function takes in a numpy array and compares it to a list
 of numpy arrays. If it is in the array, it outputs True, else,
@@ -39,28 +42,8 @@ Inputs: tup, a numpy array, for example. array([2,1,1,1])
 Outputs: True if bag contains tup
          False, else
 '''
-
 def containedinset(tup,bag):
     for x in bag:
         if (tup == x).all() == True:
             return True
-            break
     return False
-        
-'''
-This function does the same as posstringset but it also
-gets the entries where we have 0s
-'''
-
-def stringset(n,m):
-    if m == 0:
-        return [np.zeros(n,dtype=int)]
-    else:
-        prev_set = stringset(n,m-1)
-        new_set = []
-        for i in range(n):
-            for x in prev_set:
-                y = np.sort(x + np.eye(n)[i])
-                if containedinset(y,new_set) == False:
-                    new_set.append(y)
-    return new_set
