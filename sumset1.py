@@ -1,4 +1,5 @@
 import numpy as np
+from itertools import permutations
 
 '''
 The function stringset returns the total set of ascending order m-tuples that add
@@ -47,3 +48,22 @@ def containedinset(tup,bag):
         if (tup == x).all() == True:
             return True
     return False
+
+'''
+This function generates a list containing all points on the simplex
+
+Inputs: n,m,k
+Outputs: a list of m-dimensional lists,
+         containing all points on the simplex 
+         section with all m-dim lists, adding to
+         n, ea element containing at least k
+'''
+def Generate_Simplex(n,m,k=0):
+    ans = []
+    a = stringset1(n,m,k)
+    for x in a:
+        b = list(permutations(x, m))
+        res = []
+        [res.append(y) for y in b if y not in res]
+        [ans.append(list(y)) for y in res]
+    return ans
