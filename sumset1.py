@@ -10,6 +10,8 @@ Inputs: n, a non-negative integer
         optional), a non-negative integer
 
 Output: a list of np.arrays containing all ordered m-tuples in ascending order
+
+The Stringset function has Big-O complexity of O(m*n^{m-1})
 '''
 def stringset(n,m,k=0):
     q1 = m*k
